@@ -85,20 +85,15 @@ def main() -> None:
 
 
 def shortest_path(source, target):
-    
     """
     Returns the shortest list of (movie_id, person_id) pairs
     that connect the source to the target.
 
     If no possible path, returns None.
     """
-
-    # TODO
-    # raise NotImplementedError
-    
     if source == target:
         return []
-    
+
     # Initialize frontier to just the starting position
     start = Node(state=source, parent=None, action=None)
     frontier = QueueFrontier()
@@ -139,23 +134,6 @@ def shortest_path(source, target):
         explored.add(node.state)
 
     return None
-
-
-def reconstruct_path(node_from_source, node_from_target):
-    # Build path from source side
-    path_src = []
-    while node_from_source.parent is not None:
-        path_src.append((node_from_source.action, node_from_source.state))
-        node_from_source = node_from_source.parent
-    path_src.reverse()
-
-    # Build path from target side
-    path_tgt = []
-    while node_from_target.parent is not None:
-        path_tgt.append((node_from_target.action, node_from_target.state))
-        node_from_target = node_from_target.parent
-
-    return path_src + path_tgt
 
 
 def person_id_for_name(name) -> str:
