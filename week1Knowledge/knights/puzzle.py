@@ -13,6 +13,12 @@ CKnave = Symbol("C is a Knave")
 # A says "I am both a knight and a knave."
 knowledge0 = And(
     # TODO
+    # Base Constraint: A is a Knight if and only if A is not a Knave
+    Biconditional(AKnight, Not(AKnave)),
+
+    # A's Statement: "I am both a knight and a knave"
+    # A is a Knight if and only if that statement is true
+    Biconditional(AKnight, And(AKnight, AKnave))
 )
 
 # Puzzle 1
@@ -20,6 +26,13 @@ knowledge0 = And(
 # B says nothing.
 knowledge1 = And(
     # TODO
+    # Base Constraints
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(BKnight, Not(BKnave)),
+
+    # A's Statement: "We are both knaves"
+    # A is a Knight if and only if (A is a Knave AND B is a Knave)
+    Biconditional(AKnight, And(AKnave, BKnave))
 )
 
 # Puzzle 2
@@ -27,6 +40,23 @@ knowledge1 = And(
 # B says "We are of different kinds."
 knowledge2 = And(
     # TODO
+    # Base Constraints
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(BKnight, Not(BKnave)),
+
+    # A's Statement: "We are the same kind"
+    # This means: (A is Knight AND B is Knight) OR (A is Knave AND B is Knave)
+    Biconditional(AKnight, Or(
+        And(AKnight, BKnight),
+        And(AKnave, BKnave)
+    )),
+
+    # B's Statement: "We are of different kinds"
+    # This means: (A is Knight AND B is Knave) OR (A is Knave AND B is Knight)
+    Biconditional(BKnight, Or(
+        And(AKnight, BKnave),
+        And(AKnave, BKnight)
+    ))
 )
 
 # Puzzle 3
@@ -36,6 +66,22 @@ knowledge2 = And(
 # C says "A is a knight."
 knowledge3 = And(
     # TODO
+    # Base Constraints
+    Biconditional(AKnight, Not(AKnave)),
+    Biconditional(BKnight, Not(BKnave)),
+    Biconditional(CKnight, Not(CKnave)),
+
+    # B says "A said 'I am a knave'."
+    # 1. A says "I am a knave": Biconditional(AKnight, AKnave)
+    #    (This checks if A's type matches the statement "I am a Knave")
+    # 2. B says that: Biconditional(BKnight, ...)
+    Biconditional(BKnight, Biconditional(AKnight, AKnave)),
+
+    # B says "C is a knave."
+    Biconditional(BKnight, CKnave),
+
+    # C says "A is a knight."
+    Biconditional(CKnight, AKnight)
 )
 
 
